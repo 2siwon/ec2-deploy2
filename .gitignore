@@ -210,3 +210,5 @@ venv.bak/
 # Custom
 
 /idea.
+.static_root/
+.config_secret/
