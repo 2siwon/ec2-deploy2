@@ -16,10 +16,22 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT_DIR = os.path.dirname(BASE_DIR)
 
+# templates
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+
 # .config_secret
 CONFIG_SECRET_DIR = os.path.join(ROOT_DIR, '.config_secret')
 CONFIG_SECRET_COMMON_FILE = os.path.join(CONFIG_SECRET_DIR, 'settings_common.json')
 config_secret = json.loads(open(CONFIG_SECRET_COMMON_FILE).read())
+
+# AWS
+AWS_ACCESS_KEY_ID = config_secret['aws']['aws_access_key_id']
+AWS_SECRET_ACCESS_KEY = config_secret['aws']['aws_secret_access_key']
+AWS_STORAGE_BUCKET_NAME = config_secret['aws']['s3_bucket_name']
+
+# S3 FileStorage
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -28,7 +40,6 @@ config_secret = json.loads(open(CONFIG_SECRET_COMMON_FILE).read())
 
 # User Model
 AUTH_USER_MODEL = 'member.User'
-
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -41,7 +52,6 @@ ALLOWED_HOSTS = [
     '.ap-northeast-2.compute.amazonaws.com',
     '.siwon.me',
 ]
-
 
 # Application definition
 
@@ -56,7 +66,7 @@ INSTALLED_APPS = [
     # apps
     'member',
 
-    #3rd party
+    # 3rd party
     'config',
     'django_extensions',
     'storages',
@@ -74,10 +84,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'config.urls'
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            TEMPLATES_DIR,
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -91,7 +104,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
-
 
 # Database
 DATABASES = config_secret['django']['databases']
@@ -118,7 +130,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -132,7 +143,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
@@ -145,4 +155,3 @@ STATIC_ROOT = os.path.join(ROOT_DIR, '.static_root')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-

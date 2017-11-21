@@ -208,7 +208,6 @@ venv.bak/
 # End of https://www.gitignore.io/api/macos,python,django,pycharm
 
 # Custom
-
-/idea.
+.idea/
 .static_root/
 .config_secret/
